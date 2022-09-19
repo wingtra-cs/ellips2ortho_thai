@@ -1,11 +1,12 @@
-import streamlit as st
 from osgeo import gdal
-import numpy as np
 from scipy.interpolate import griddata
+import numpy as np
 import pandas as pd
-import requests
-import zipfile
 import pydeck as pdk
+import requests
+import streamlit as st
+import zipfile
+
 
 def interpolate_raster(f, lat, lon):
     band = f.GetRasterBand(1)
@@ -22,8 +23,6 @@ def interpolate_raster(f, lat, lon):
     surround_data = (band.ReadAsArray(np.floor(column-2), np.floor(row-2), 5, 5))
     lon_c = transform[0] + np.floor(column) * res
     lat_c = transform[3] - np.floor(row) * res
-    
-    print(lat_c, lon_c)
     
     # Extract geoid undulation values of surrounding data
     count = -1
