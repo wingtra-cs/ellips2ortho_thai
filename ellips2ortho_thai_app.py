@@ -101,12 +101,16 @@ def main():
             
             url = 'http://api.geonames.org/countryCode?lat='
             geo_request = url + f'{df[lat][0]}&lng={df[lon][0]}&type=json&username=irwinamago'
-            country = requests.get(geo_request).json()['countryName']
             
-            if country != 'Thailand':
-                msg = f'Locations in {uploaded_csv.name} are outside Thailand. Please remove to proceed.'
-                st.error(msg)
-                st.stop()
+            try:
+                country = requests.get(geo_request).json()['countryName']
+                
+                if country != 'Thailand':
+                    msg = f'Locations in {uploaded_csv.name} are outside Thailand. Please remove to proceed.'
+                    st.error(msg)
+                    st.stop()
+            except:
+                st.warning('Country information could not be found. Processing will commence but please ensure that the data is within Thailand.', icon="⚠️")
         
         st.success('All CSVs checked and uploaded successfully.')
         
